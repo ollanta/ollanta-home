@@ -1,0 +1,20 @@
+[user]
+	name = Ollanta CG
+
+[core]
+	editor = emacs
+	excludesfile = /home/ollanta/.gitignore_global
+[alias]
+	co = checkout
+	st = status
+	ff = merge --ff-only
+	l1 = log --pretty=authline -10
+	l1g = l1 --graph
+    dn = diff --name-only
+    newfiles = ls-files --others --exclude-standard
+    changedfiles = "!f() { REF=${1:-HEAD}; git dn $REF; git newfiles; }; f"
+    ancestry = "!f() { commit1=$(git rev-parse $1); commit2=$(git rev-parse $2); if $(git merge-base --is-ancestor $commit1 $commit2); then echo "Ancestor SHA: $1"; elif $(git merge-base --is-ancestor $commit2 $commit1); then echo \"Ancestor SHA: $2\"; else echo \"None is a direct descendent of the other!\"; echo \"Common ancestor: $(git merge-base $commit1 $commit2)\"; fi; }; f"
+	showmerge = "!f() { REF=${1:-HEAD}; git diff --cc $REF $(git merge-base $REF^1 $REF^2) $REF^1 $REF^2; }; f"
+	showongoingmerge = "!f() { git diff --cc $(git merge-base HEAD MERGE_HEAD) HEAD MERGE_HEAD; }; f"
+[pretty]
+	authline = "format:%C(auto)%h %Cblue%<(10,trunc)%aN%Creset %C(auto)%d %s"
